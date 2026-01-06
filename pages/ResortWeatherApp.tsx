@@ -2,12 +2,40 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { ResortCard } from '../components/ResortCard';
 import { mockResorts } from '../data/mockResorts';
+import { fetchAllResortsWeather } from '../services/weatherService';
+import { Resort } from '../types/resort';
+
 export function ResortWeatherApp() {
   const [selectedState, setSelectedState] = useState('Colorado');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [resorts, setResorts] = useState<Resort[]>(mockResorts);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   
-  const sortedResorts = [...mockResorts].sort((a, b) => b.uxIndex - a.uxIndex);
+  // Fetch real weather data on mount
+  useEffect(() => {
+    const loadWeatherData = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const weatherData = await fetchAllResortsWeather(mockResorts);
+        setResorts(weatherData);
+      } catch (err) {
+        console.error('Failed to fetch weather data:', err);
+        setError('Unable to load live weather data. Showing cached data.');
+        // Keep using mock data as fallback
+        setResorts(mockResorts);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadWeatherData();
+  }, []);
+  
+  // Sort by temperature (coldest first - best for skiing!)
+  const sortedResorts = [...resorts].sort((a, b) => a.currentTemp - b.currentTemp);
   
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -79,17 +107,39 @@ export function ResortWeatherApp() {
 
       {/* Main Grid */}
       <main className="px-6 md:px-12 pb-24 max-w-[1600px] mx-auto">
-        {sortedResorts.length > 0 ? <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 md:gap-12">
-            {sortedResorts.map((resort, index) => <div key={resort.id} className="transform transition-all duration-500 hover:-translate-y-2" style={{
-          transitionDelay: `${index * 50}ms`
-        }}>
+        {error && (
+          <div className="mb-8 p-4 bg-yellow-50 border-2 border-yellow-200 rounded-2xl">
+            <p className="text-sm font-bold text-yellow-900">{error}</p>
+          </div>
+        )}
+        
+        {isLoading ? (
+          <div className="py-32 text-center">
+            <h3 className="text-4xl font-black text-slate-300 uppercase tracking-tighter animate-pulse">
+              Loading Fresh Conditions...
+            </h3>
+          </div>
+        ) : sortedResorts.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 md:gap-12">
+            {sortedResorts.map((resort, index) => (
+              <div
+                key={resort.id}
+                className="transform transition-all duration-500 hover:-translate-y-2"
+                style={{
+                  transitionDelay: `${index * 50}ms`
+                }}
+              >
                 <ResortCard resort={resort} />
-              </div>)}
-          </div> : <div className="py-32 text-center">
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="py-32 text-center">
             <h3 className="text-4xl font-black text-slate-200 uppercase tracking-tighter">
               No Peaks Found
             </h3>
-          </div>}
+          </div>
+        )}
       </main>
 
       {/* Minimal Footer */}

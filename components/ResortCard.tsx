@@ -39,17 +39,16 @@ export function ResortCard({
           </div>
         </div>
 
-        {/* Hero Metric: UX Index */}
+        {/* Hero Metric: Temperature */}
         <div className="flex-1 flex flex-col justify-center items-center my-4">
           <div className="relative">
             <span className="text-[140px] leading-[0.8] font-black text-slate-900 tracking-tighter drop-shadow-sm">
-              {resort.uxIndex}
+              {resort.currentTemp}
             </span>
-            
+            <span className="text-5xl font-black text-slate-900 absolute top-4 -right-6">°</span>
           </div>
           <div className="mt-4 inline-flex items-center px-4 py-1.5 rounded-full bg-slate-900 text-white text-sm font-bold tracking-wide shadow-lg">
-            {resort.weatherCondition.toUpperCase().replace('-', ' ')} •{' '}
-            {resort.currentTemp}°
+            {resort.weatherCondition.toUpperCase().replace('-', ' ')}
           </div>
         </div>
 
@@ -69,13 +68,13 @@ export function ResortCard({
 
           <div className="flex flex-col">
             <span className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">
-              Base
+              UV Index
             </span>
             <div className="flex items-baseline">
               <span className="text-2xl font-black text-slate-900">
-                {resort.baseSnow}
+                {resort.uvIndex}
               </span>
-              <span className="text-sm font-bold text-slate-400 ml-0.5">"</span>
+              <span className="text-sm font-bold text-slate-400 ml-0.5"></span>
             </div>
           </div>
 
