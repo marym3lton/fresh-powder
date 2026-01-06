@@ -1,6 +1,14 @@
-# Alpine Report
+# Fresh Powder
 
-A beautiful, modern React application displaying weather conditions for Colorado ski resorts.
+A modern React application displaying weather conditions for Colorado ski resorts.
+
+## Preview
+
+### Desktop View
+![Desktop View](screenshots/Desktop.png)
+
+### Mobile View
+![Mobile View](screenshots/Mobile.png)
 
 ## Features
 
@@ -50,7 +58,7 @@ The built files will be in the `dist` directory.
 ## Project Structure
 
 ```
-freshpow/
+fresh-powder/
 ├── components/       # React components
 │   ├── ResortCard.tsx
 │   └── WeatherIcon.tsx
@@ -67,5 +75,5 @@ freshpow/
 
 ## License
 
-© 2024 Alpine Report
+© 2026 Fresh Powder
 

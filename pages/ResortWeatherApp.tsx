@@ -57,7 +57,7 @@ export function ResortWeatherApp() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
           <div>
             <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] mb-4">
-              FRESH POW
+              FRESH POWDER
             </h1>
             <p className="text-xl font-medium text-slate-500 max-w-md">
               Real-time conditions for snow sport enthusiasts.
