@@ -17,7 +17,7 @@ export function ResortCard({
   };
   return <div className={`group relative overflow-hidden rounded-[2rem] border-2 transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 ${getTheme()} h-[420px] flex flex-col`}>
       {/* Background Weather Visual - Abstract & Large */}
-      <div className="absolute -right-16 -top-16 opacity-40 transition-transform duration-700 group-hover:scale-110 group-hover:rotate-12">
+      <div className="absolute right-0 top-0 opacity-40 transition-transform duration-700 group-hover:scale-110 group-hover:rotate-12">
         <WeatherIcon condition={resort.weatherCondition} size="xl" />
       </div>
 
