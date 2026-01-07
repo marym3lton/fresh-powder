@@ -47,6 +47,17 @@ export function ResortCard({
             </span>
             <span className="text-5xl font-black text-slate-900 absolute top-4 -right-6">°</span>
           </div>
+          <div className="flex items-center gap-3 mt-3">
+            <div className="flex items-center gap-1">
+              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">H:</span>
+              <span className="text-lg font-black text-slate-900">{resort.highTemp}°</span>
+            </div>
+            <div className="w-1 h-1 rounded-full bg-slate-300"></div>
+            <div className="flex items-center gap-1">
+              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">L:</span>
+              <span className="text-lg font-black text-slate-900">{resort.lowTemp}°</span>
+            </div>
+          </div>
           <div className="mt-4 inline-flex items-center px-4 py-1.5 rounded-full bg-slate-900 text-white text-sm font-bold tracking-wide shadow-lg">
             {resort.weatherCondition.toUpperCase().replace('-', ' ')}
           </div>

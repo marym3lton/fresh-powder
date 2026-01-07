@@ -15,6 +15,8 @@ export interface Resort {
     lon: number
   }
   currentTemp: number // in Fahrenheit
+  highTemp: number // in Fahrenheit
+  lowTemp: number // in Fahrenheit
   weatherCondition: WeatherCondition
   precip24h: number // in inches
   precip48h: number // in inches

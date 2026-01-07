@@ -115,8 +115,15 @@ export const fetchResortWeather = async (
     const precip24h = calculateSnowfall(data.hourly.time, data.hourly.snowfall, 24)
     const precip48h = calculateSnowfall(data.hourly.time, data.hourly.snowfall, 48)
 
+    // Calculate high and low temperatures for today (next 24 hours)
+    const futureTemps = data.hourly.temperature_2m.slice(0, 24)
+    const highTemp = Math.round(Math.max(...futureTemps))
+    const lowTemp = Math.round(Math.min(...futureTemps))
+
     return {
       currentTemp,
+      highTemp,
+      lowTemp,
       weatherCondition,
       precip24h,
       precip48h,
