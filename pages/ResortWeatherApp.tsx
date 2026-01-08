@@ -124,7 +124,7 @@ export function ResortWeatherApp() {
             {sortedResorts.map((resort, index) => (
               <div
                 key={resort.id}
-                className="transform transition-all duration-500 hover:-translate-y-2"
+                className="transform transition-all duration-500"
                 style={{
                   transitionDelay: `${index * 50}ms`
                 }}
