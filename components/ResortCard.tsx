@@ -26,7 +26,7 @@ export function ResortCard({
         {/* Header */}
         <div className="flex justify-between items-start">
           <div>
-            <h3 className="text-3xl font-black tracking-tighter text-slate-900 leading-none mb-2">
+            <h3 className="text-3xl font-black tracking-[-0.2px] text-slate-900 leading-none mb-2">
               {resort.name}
             </h3>
             <div className="flex items-center text-slate-500 font-medium tracking-wide text-sm uppercase">

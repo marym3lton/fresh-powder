@@ -16,7 +16,7 @@ export function WeatherIcon({
     sm: 'w-6 h-6',
     md: 'w-12 h-12',
     lg: 'w-24 h-24',
-    xl: 'w-48 h-48'
+    xl: 'w-36 h-36'
   };
   // Artistic gradient definitions based on condition
   const getGradient = (cond: WeatherCondition) => {
