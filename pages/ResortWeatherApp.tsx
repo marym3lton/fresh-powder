@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { ResortCard } from '../components/ResortCard';
+import { SnowReportRail } from '../components/SnowReportRail';
 import { mockResorts } from '../data/mockResorts';
 import { fetchAllResortsWeather } from '../services/weatherService';
 import { Resort } from '../types/resort';
@@ -11,6 +12,7 @@ export function ResortWeatherApp() {
   const [resorts, setResorts] = useState<Resort[]>(mockResorts);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedResort, setSelectedResort] = useState<Resort | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   
   // Fetch real weather data on mount
@@ -129,7 +131,7 @@ export function ResortWeatherApp() {
                   transitionDelay: `${index * 50}ms`
                 }}
               >
-                <ResortCard resort={resort} />
+                <ResortCard resort={resort} onClick={() => setSelectedResort(resort)} />
               </div>
             ))}
           </div>
@@ -147,6 +149,12 @@ export function ResortWeatherApp() {
         <span>Colorado, USA</span>
         <span>© 2024 Alpine Report</span>
       </footer>
+
+      {/* Snow Report Rail */}
+      <SnowReportRail
+        resort={selectedResort}
+        onClose={() => setSelectedResort(null)}
+      />
     </div>;
 }
 

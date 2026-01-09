@@ -6,6 +6,15 @@ export type WeatherCondition =
   | 'windy'
   | 'partly-cloudy'
 
+export interface DailyForecast {
+  date: string
+  snowfall: number // inches
+  tempHigh: number // Fahrenheit
+  tempLow: number // Fahrenheit
+  weatherCondition: WeatherCondition
+  windSpeed: number // mph
+}
+
 export interface Resort {
   id: string
   name: string
@@ -25,5 +34,6 @@ export interface Resort {
   windSpeed: number // mph
   liftsOpen: number
   totalLifts: number
+  dailyForecast?: DailyForecast[]
 }
 

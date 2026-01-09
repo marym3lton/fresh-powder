@@ -1,4 +1,4 @@
-import { Resort, WeatherCondition } from '../types/resort'
+import { Resort, WeatherCondition, DailyForecast } from '../types/resort'
 
 // Open-Meteo API interfaces
 interface OpenMeteoResponse {
@@ -12,6 +12,14 @@ interface OpenMeteoResponse {
     time: string[]
     snowfall: number[] // cm
     temperature_2m: number[]
+  }
+  daily?: {
+    time: string[]
+    snowfall_sum: number[] // cm
+    temperature_2m_max: number[] // Fahrenheit (when unit specified)
+    temperature_2m_min: number[] // Fahrenheit (when unit specified)
+    weathercode: number[]
+    windspeed_10m_max: number[] // mph (when unit specified)
   }
 }
 
@@ -87,15 +95,17 @@ export const fetchResortWeather = async (
   try {
     // Open-Meteo API URL with all required parameters
     // Request past 72 hours of hourly data to calculate 24h and 48h snowfall
+    // Also request 7-day daily forecast for snowfall and temperatures
     const url = new URL('https://api.open-meteo.com/v1/forecast')
     url.searchParams.append('latitude', lat.toString())
     url.searchParams.append('longitude', lon.toString())
     url.searchParams.append('current', 'temperature_2m,windspeed_10m,weathercode,uv_index')
     url.searchParams.append('hourly', 'snowfall,temperature_2m')
+    url.searchParams.append('daily', 'snowfall_sum,temperature_2m_max,temperature_2m_min,weathercode,windspeed_10m_max')
     url.searchParams.append('temperature_unit', 'fahrenheit')
     url.searchParams.append('windspeed_unit', 'mph')
     url.searchParams.append('past_hours', '72')
-    url.searchParams.append('forecast_hours', '1')
+    url.searchParams.append('forecast_days', '7')
 
     const response = await fetch(url.toString())
 
@@ -120,6 +130,19 @@ export const fetchResortWeather = async (
     const highTemp = Math.round(Math.max(...futureTemps))
     const lowTemp = Math.round(Math.min(...futureTemps))
 
+    // Build 7-day forecast from daily data
+    let dailyForecast: DailyForecast[] | undefined
+    if (data.daily) {
+      dailyForecast = data.daily.time.map((date, i) => ({
+        date,
+        snowfall: cmToInches(data.daily!.snowfall_sum[i] || 0),
+        tempHigh: Math.round(data.daily!.temperature_2m_max[i]),
+        tempLow: Math.round(data.daily!.temperature_2m_min[i]),
+        weatherCondition: mapWeatherCode(data.daily!.weathercode[i]),
+        windSpeed: Math.round(data.daily!.windspeed_10m_max[i]),
+      }))
+    }
+
     return {
       currentTemp,
       highTemp,
@@ -129,6 +152,7 @@ export const fetchResortWeather = async (
       precip48h,
       uvIndex,
       windSpeed,
+      dailyForecast,
     }
   } catch (error) {
     console.error(`Error fetching weather for resort:`, error)

@@ -4,9 +4,11 @@ import { Resort } from '../types/resort';
 import { WeatherIcon } from './WeatherIcon';
 interface ResortCardProps {
   resort: Resort;
+  onClick?: () => void;
 }
 export function ResortCard({
-  resort
+  resort,
+  onClick
 }: ResortCardProps) {
   // Determine card theme based on weather
   const getTheme = () => {
@@ -15,7 +17,9 @@ export function ResortCard({
     if (resort.weatherCondition === 'cloudy') return 'bg-slate-50 hover:bg-slate-100 border-slate-200';
     return 'bg-gray-50 hover:bg-gray-100 border-gray-200';
   };
-  return <div className={`group relative overflow-hidden rounded-[2rem] border-2 transition-all duration-500 hover:shadow-lg hover:-translate-y-[2px] ${getTheme()} h-[420px] flex flex-col`}>
+  return <div 
+    onClick={onClick}
+    className={`group relative overflow-hidden rounded-[2rem] border-2 transition-all duration-500 hover:shadow-lg hover:-translate-y-[2px] cursor-pointer ${getTheme()} h-[420px] flex flex-col`}>
       {/* Background Weather Visual - Abstract & Large */}
       <div className="absolute right-0 top-0 opacity-40 transition-transform duration-700 group-hover:scale-105 group-hover:rotate-6">
         <WeatherIcon condition={resort.weatherCondition} size="xl" />
