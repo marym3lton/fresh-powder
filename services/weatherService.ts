@@ -6,12 +6,12 @@ interface OpenMeteoResponse {
     temperature_2m: number // Celsius
     windspeed_10m: number // km/h
     weathercode: number
-    uv_index: number
   }
   hourly: {
     time: string[]
     snowfall: number[] // cm
     temperature_2m: number[]
+    uv_index: number[]
   }
   daily?: {
     time: string[]
@@ -99,8 +99,8 @@ export const fetchResortWeather = async (
     const url = new URL('https://api.open-meteo.com/v1/forecast')
     url.searchParams.append('latitude', lat.toString())
     url.searchParams.append('longitude', lon.toString())
-    url.searchParams.append('current', 'temperature_2m,windspeed_10m,weathercode,uv_index')
-    url.searchParams.append('hourly', 'snowfall,temperature_2m')
+    url.searchParams.append('current', 'temperature_2m,windspeed_10m,weathercode')
+    url.searchParams.append('hourly', 'snowfall,temperature_2m,uv_index')
     url.searchParams.append('daily', 'snowfall_sum,temperature_2m_max,temperature_2m_min,weathercode,windspeed_10m_max')
     url.searchParams.append('temperature_unit', 'fahrenheit')
     url.searchParams.append('windspeed_unit', 'mph')
@@ -119,7 +119,16 @@ export const fetchResortWeather = async (
     const currentTemp = Math.round(data.current.temperature_2m)
     const windSpeed = Math.round(data.current.windspeed_10m)
     const weatherCondition = mapWeatherCode(data.current.weathercode)
-    const uvIndex = Math.round(data.current.uv_index)
+    
+    // Get current UV index from hourly data (find the current hour)
+    const now = new Date()
+    const currentHourIndex = data.hourly.time.findIndex((time) => {
+      const hourTime = new Date(time)
+      return hourTime.getTime() > now.getTime()
+    })
+    // Use the hour just before the next hour (current hour), or fallback to index 0
+    const uvHourIndex = currentHourIndex > 0 ? currentHourIndex - 1 : 0
+    const uvIndex = Math.round(data.hourly.uv_index[uvHourIndex] || 0)
 
     // Calculate snowfall from past 24h and 48h
     const precip24h = calculateSnowfall(data.hourly.time, data.hourly.snowfall, 24)

@@ -58,7 +58,7 @@ export function ResortWeatherApp() {
       <header className="pt-20 pb-12 px-6 md:px-12 max-w-[1600px] mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
           <div>
-            <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] mb-4">
+            <h1 className="text-6xl md:text-8xl font-black tracking-[-2px] leading-[0.9] mb-4">
               FRESH POWDER
             </h1>
             <p className="text-xl font-medium text-slate-500 max-w-md">
